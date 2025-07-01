@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Konia Token</title>
+  <link rel="stylesheet" href="style3.css" />
+</head>
+<body>
+  <header>
+    <h1>Welcome to Konia ($KON)</h1>
+    <p>Your community-first meme token on Ethereum</p>
+  </header>
+
+  <main>
+    <section class="section" id="tokenomics">
+      <h3>Tokenomics</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Allocation</th>
+            <th>Amount (KON)</th>
+            <th>Percentage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Presale</td><td>30,000,000,000</td><td>30%</td></tr>
+          <tr><td>Liquidity & Listings</td><td>20,000,000,000</td><td>20%</td></tr>
+          <tr><td>Development & Marketing</td><td>15,000,000,000</td><td>15%</td></tr>
+          <tr><td>Burn Vault</td><td>15,000,000,000</td><td>15%</td></tr>
+          <tr><td>Team Allocation</td><td>15,000,000,000</td><td>15%</td></tr>
+          <tr><td>Staking Rewards</td><td>5,000,000,000</td><td>5%</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section" id="presale">
+      <h3>Presale Details</h3>
+      <p>Join the Konia ($KON) presale to get early access to tokens at a special price! Our presale ensures fair and transparent distribution for all community members.</p>
+      <ul>
+        <li><strong>Start Date:</strong> July 15, 2025</li>
+        <li><strong>End Date:</strong> July 30, 2025</li>
+        <li><strong>Presale Price:</strong> 1 KON = $0.0001</li>
+        <li><strong>Hard Cap:</strong> $3,000,000</li>
+        <li><strong>How to Participate:</strong> Connect your wallet and buy tokens on our presale page.</li>
+      </ul>
+      <button id="buyButton" class="btn">Buy KON</button>
+      <div id="status" style="margin-top: 10px;"></div>
+    </section>
+
+    <section class="section" id="roadmap">
+      <h3>Roadmap</h3>
+      <ul>
+        <li><strong>Q1:</strong> Token creation, website launch, community onboarding.</li>
+        <li><strong>Q2:</strong> Community-driven presale, liquidity pool establishment, initial marketing push.</li>
+        <li><strong>Q3:</strong> Applications for CEX listings, NFT infrastructure development.</li>
+        <li><strong>Q4:</strong> Burn vault activation, expansion of ecosystem partnerships.</li>
+        <li><strong>Q1 (Next Year):</strong> Implementation of rewards distribution, staking platform rollout, NFT marketplace launch.</li>
+        <li><strong>Q2 (Next Year):</strong> Launch of Konia Academy for Web3 education.</li>
+        <li><strong>Q3 (Next Year):</strong> Exploration and development of multi-chain bridges, initiation of community innovation grants.</li>
+        <li><strong>Q4 (Next Year):</strong> Expansion into DeFi lending protocols and partnerships.</li>
+        <li><strong>Q1 (Following Year):</strong> Launch of mobile app wallet integration and fiat on-ramp solutions.</li>
+        <li><strong>Q2 (Following Year):</strong> Global community events and partnerships with major crypto influencers.</li>
+        <li><strong>Q3 (Following Year):</strong> Integration with cross-chain NFT platforms and gaming ecosystems.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Konia Token. All rights reserved.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+  <script>
+    const buyButton = document.getElementById('buyButton');
+    const status = document.getElementById('status');
+
+    buyButton.onclick = async () => {
+      if (!window.ethereum) {
+        status.innerText = 'MetaMask not detected. Please install MetaMask!';
+        return;
+      }
+
+      try {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+
+        // Replace with your presale contract address
+        const presaleContractAddress = '0xYourPresaleContractAddressHere';
+
+        // Minimal ABI with buyTokens function
+        const presaleABI = [
+          "function buyTokens() payable"
+        ];
+
+        const presaleContract = new ethers.Contract(presaleContractAddress, presaleABI, signer);
+
+        // ETH amount to send (example 0.1 ETH)
+        const amountInEth = '0.1';
+        const overrides = { value: ethers.utils.parseEther(amountInEth) };
+
+        status.innerText = 'Processing transaction...';
+
+        const tx = await presaleContract.buyTokens(overrides);
+        await tx.wait();
+
+        status.innerText = 'Purchase successful! Thank you for buying KON.';
+      } catch (error) {
+        console.error(error);
+        status.innerText = 'Transaction failed or rejected.';
+      }
+    };
+  </script>
+</body>
+</html>
